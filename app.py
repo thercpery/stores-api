@@ -14,10 +14,8 @@ from models.item import ItemModel
 from models.store import StoreModel
 
 uri = os.getenv("DATABASE_URL") or "sqlite:///data.db"  # or other relevant config var
-print(f"URI Before: {uri}")
 if uri.startswith("postgres://"):
     uri = uri.replace("postgres://", "postgresql://", 1)
-print(f"URI_AFTER: {uri}")
 
 # Init app
 app = Flask(__name__)
@@ -32,8 +30,8 @@ db.init_app(app)
 @app.before_first_request
 def create_tables():
     UserModel.__table__.create(db.session.bind, checkfirst=True)
-    ItemModel.__table__.create(db.session.bind, checkfirst=True)
     StoreModel.__table__.create(db.session.bind, checkfirst=True)
+    ItemModel.__table__.create(db.session.bind, checkfirst=True)
     
 jwt = JWT(app, authenticate, identity) # this creates a new endpoint called "/auth"
 
